@@ -1,6 +1,8 @@
 package com.project1;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,6 +16,27 @@ import org.hibernate.Transaction;
 
 import com.db.Connector;
 import com.db.User;
+import com.nimbusds.jwt.JWT;
+import com.nimbusds.oauth2.sdk.AuthorizationCode;
+import com.nimbusds.oauth2.sdk.AuthorizationCodeGrant;
+import com.nimbusds.oauth2.sdk.ParseException;
+import com.nimbusds.oauth2.sdk.TokenErrorResponse;
+import com.nimbusds.oauth2.sdk.TokenRequest;
+import com.nimbusds.oauth2.sdk.TokenResponse;
+import com.nimbusds.oauth2.sdk.auth.ClientAuthentication;
+import com.nimbusds.oauth2.sdk.auth.ClientSecretPost;
+import com.nimbusds.oauth2.sdk.auth.Secret;
+import com.nimbusds.oauth2.sdk.http.HTTPRequest;
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+import com.nimbusds.oauth2.sdk.id.ClientID;
+import com.nimbusds.oauth2.sdk.token.BearerAccessToken;
+import com.nimbusds.oauth2.sdk.token.RefreshToken;
+import com.nimbusds.openid.connect.sdk.AuthenticationErrorResponse;
+import com.nimbusds.openid.connect.sdk.AuthenticationResponse;
+import com.nimbusds.openid.connect.sdk.AuthenticationResponseParser;
+import com.nimbusds.openid.connect.sdk.AuthenticationSuccessResponse;
+import com.nimbusds.openid.connect.sdk.OIDCTokenResponse;
+import com.nimbusds.openid.connect.sdk.OIDCTokenResponseParser;
 
 
 /**
@@ -30,19 +53,94 @@ public class ReturnGoogle extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		/**
-		 * 
-		 * 
-		 * DO YOUR OPENID MAGIC HERE
-		 * 
-		 * 
-		 */
+
+		String returnURL="http://localhost:8080/project1/ReturnGoogle";
+		String query1 = request.getRequestURL().append("?").append(request.getQueryString()).toString();
+		URI s=null;
+		try {
+			s = new URI(query1);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		AuthenticationResponse authResponse=null;
+		try {
+			authResponse = AuthenticationResponseParser.parse(s);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(authResponse instanceof AuthenticationErrorResponse) {
+		// TODO: error handling: authentication error
+		}
+		
+			  
+		AuthenticationSuccessResponse authzSuccess =(AuthenticationSuccessResponse)authResponse;
+		AuthorizationCode code =authzSuccess.getAuthorizationCode();
+		com.nimbusds.oauth2.sdk.id.State state = authzSuccess.getState();
+//		String state1=state.toString();
+//		String state2=request.getAttribute("state").toString();
+////		
+//		if (state.equals(state2)==false) {
+//			    response.getWriter().print("State not equal");
+//			    return;
+//		}
+		
+		ClientID clientID =new ClientID("664700022174-tkgm8ehfjl4sieruvsi1chqkassg6n6p.apps.googleusercontent.com");
+		Secret clientSecret = new Secret("HqQRmVe9AEbzBeciRsnPnaks");
+		ClientAuthentication clientAuth =new ClientSecretPost(clientID, clientSecret);
+		
+		URI tokenEndpointURL=null;
+		try {
+			tokenEndpointURL = new URI("https://www.googleapis.com/oauth2/v4/token");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		TokenRequest accessTokenRequest=null;
+		try {
+			accessTokenRequest = new TokenRequest(
+			tokenEndpointURL, clientAuth,new AuthorizationCodeGrant(code,new URI(returnURL)));
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		HTTPRequest httpRequest;
+		httpRequest = accessTokenRequest.toHTTPRequest();
+		HTTPResponse httpResponse = httpRequest.send();
+		
+		TokenResponse tokenResponse=null;
+		try {
+			tokenResponse = OIDCTokenResponseParser.parse(httpResponse);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (tokenResponse instanceof TokenErrorResponse) {
+				// do error handling
+			
+				TokenErrorResponse tokenError=(TokenErrorResponse)tokenResponse;
+				response.getWriter().println("Error on receiving token"+ tokenError);
+				return;
+		}
+		OIDCTokenResponse tokenSuccess =(OIDCTokenResponse)tokenResponse;
+		BearerAccessToken accessToken = (BearerAccessToken) tokenSuccess.getOIDCTokens().getBearerAccessToken();
+		RefreshToken refreshToken = tokenSuccess.getOIDCTokens().getRefreshToken();
+		JWT idToken = tokenSuccess.getOIDCTokens().getIDToken();
+				// just for testing:
+		net.minidev.json.JSONObject jsonObject=null;
+		try {
+			jsonObject = idToken.getJWTClaimsSet().toJSONObject();
+		} catch (java.text.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response.getWriter().print(jsonObject.toString());
+
+		String email = jsonObject.get("email").toString();
+		String name = jsonObject.get("name").toString();
 		
 		/* ---- CHECK TO OUR DB BEGIN ----*/
-		String name = request.getParameter("user");
-		String email = name;
-		//String name = "Stewart Sentanoe"; //Change this parameter based what you need
-		//String email = "ss@gmail.com"; //Change this parameter based what you need
 		String realm = "GOOGLE"; //Change this parameter based what you need
 		int uid=0;
 		

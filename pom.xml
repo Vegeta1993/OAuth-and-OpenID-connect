@@ -8,6 +8,11 @@
   <name>project1 Maven Webapp</name>
   <url>http://maven.apache.org</url>
   <dependencies>
+  <dependency>
+	<groupId>com.nimbusds</groupId>
+	<artifactId>oauth2-oidc-sdk</artifactId>
+	<version>5.17.3</version>
+</dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -44,7 +49,11 @@
       <artifactId>hibernate-c3p0</artifactId>
       <version>4.3.7.Final</version>
 </dependency>
-	
+	<dependency>
+	<groupId>org.json</groupId>
+	<artifactId>json</artifactId>
+	<version>20151123</version>
+</dependency>
   </dependencies>
   <build>
     <finalName>project1</finalName>
