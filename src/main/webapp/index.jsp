@@ -58,8 +58,8 @@
                                 	<i class="fa fa-google-plus"></i> Sign in with Google
                             	</button>
                             	<br>
-                            	<button class="btn btn-block btn-social btn-facebook" name="direction" value="Paypal" type="submit">
-                                	<i class="fa fa-paypal"></i> Sign in with Paypal
+                            	<button class="btn btn-block btn-social btn-github" name="direction" value="Github" type="submit">
+                                	<i class="fa fa-github"></i> Sign in with Github
                             	</button>
                             	<br>
                             	<button class="btn btn-block btn-social btn-facebook" name="direction" value="Facebook" type="submit">

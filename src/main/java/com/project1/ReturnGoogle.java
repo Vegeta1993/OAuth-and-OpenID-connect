@@ -123,6 +123,7 @@ public class ReturnGoogle extends HttpServlet {
 				response.getWriter().println("Error on receiving token"+ tokenError);
 				return;
 		}
+		
 		OIDCTokenResponse tokenSuccess =(OIDCTokenResponse)tokenResponse;
 		BearerAccessToken accessToken = (BearerAccessToken) tokenSuccess.getOIDCTokens().getBearerAccessToken();
 		RefreshToken refreshToken = tokenSuccess.getOIDCTokens().getRefreshToken();
@@ -157,7 +158,7 @@ public class ReturnGoogle extends HttpServlet {
             query.setParameter("user_email", email);
             query.setParameter("login_realm", realm);
             List<User> result = query.list();
-            
+            response.getWriter().println(result.toString());
             if(result.size() != 0)
             {
             	//USER IS EXIST, DO THE AUTHORIZATION METHOD

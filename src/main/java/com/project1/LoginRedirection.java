@@ -61,7 +61,7 @@ public class LoginRedirection extends HttpServlet {
 			Scope scope = new Scope("openid", "email", "profile");
 			ClientID clientID = new ClientID("664700022174-tkgm8ehfjl4sieruvsi1chqkassg6n6p.apps.googleusercontent.com");
 			String state1 = new BigInteger(130, new SecureRandom()).toString(32);
-			request.getSession().getAttribute(state1);
+			request.getSession().setAttribute("state",state1);
 			State state=new State(state1);
 			Nonce nonce = null; 
 			AuthenticationRequest authRequest = new AuthenticationRequest(
@@ -80,9 +80,13 @@ public class LoginRedirection extends HttpServlet {
 			
 			response.sendRedirect(redirectString);
 		}
-		else if(realm.equalsIgnoreCase("Paypal"))
+		else if(realm.equalsIgnoreCase("Github"))
 		{
 			//REDIRECT THEM TO Paypal
+			String appId = "3fc8c836208f5da2ffa9";
+			String redirectUrl = "http://localhost:8080/project1/ReturnPaypal";
+			String returnValue = "https://github.com/login/oauth/authorize?client_id="+ appId + "&redirect_uri=" + redirectUrl+ "&scope=user:email";
+	        response.sendRedirect(returnValue);
 		}
 		else if(realm.equalsIgnoreCase("Facebook"))
 		{
