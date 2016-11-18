@@ -79,8 +79,7 @@ public class ReturnGoogle extends HttpServlet {
 		AuthorizationCode code =authzSuccess.getAuthorizationCode();
 		com.nimbusds.oauth2.sdk.id.State state = authzSuccess.getState();
 //		String state1=state.toString();
-//		String state2=request.getAttribute("state").toString();
-////		
+//		String state2=request.getSession().getAttribute("state").toString();
 //		if (state.equals(state2)==false) {
 //			    response.getWriter().print("State not equal");
 //			    return;
