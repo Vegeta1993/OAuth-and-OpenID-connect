@@ -27,6 +27,7 @@ import com.db.Connector;
 import com.db.User;
 import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+import com.restfb.util.StringUtils;
 
 import sun.net.www.http.HttpClient;
 
@@ -81,7 +82,7 @@ public class ReturnPaypal extends HttpServlet {
 
 		accesstoken = newToken;
 
-		String userUrl = "https://api.github.com/user?access_token=" + accesstoken;
+		String userUrl = "https://api.github.com/user/emails?&access_token=" + accesstoken;
 		String graph = null;
 		try {
 
@@ -94,23 +95,52 @@ public class ReturnPaypal extends HttpServlet {
 				b.append(inputLine + "\n");
 			in.close();
 			graph = b.toString();
+			graph = graph.replace("[", "");
+			graph = graph.replace("]", "");
 		} catch (Exception e) {
 			// an error occurred, handle this
 			e.printStackTrace();
 		}
 
 		String email = null;
-		String name = null;
 		try {
 			JSONObject json = new JSONObject(graph);
-			name = json.getString("login");
-			email = name + "@github.com";
+			email = json.getString("email");
+
 		} catch (Exception e) {
 			// an error occurred, handle this
 			e.printStackTrace();
 		}
 
-		
+		String userUrl1 = "https://api.github.com/user?&access_token=" + accesstoken;
+		String graph1 = null;
+		try {
+
+			URL u = new URL(userUrl1);
+			URLConnection c = (URLConnection) u.openConnection();
+			BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
+			String inputLine;
+			StringBuffer b = new StringBuffer();
+			while ((inputLine = in.readLine()) != null)
+				b.append(inputLine + "\n");
+			in.close();
+			graph1 = b.toString();
+			graph1 = graph1.replace("[", "");
+			graph1 = graph1.replace("]", "");
+		} catch (Exception e) {
+			// an error occurred, handle this
+			e.printStackTrace();
+		}
+		String name = null;
+		try {
+			JSONObject json = new JSONObject(graph1);
+			name = json.getString("login");
+
+		} catch (Exception e) {
+			// an error occurred, handle this
+			e.printStackTrace();
+		}
+
 		String realm = "GITHUB";
 		int uid = 0;
 		Session session = null;
@@ -145,6 +175,7 @@ public class ReturnPaypal extends HttpServlet {
 				try {
 					User newUser = new User(0, name, email, realm);
 					session.save(newUser);
+					uid = newUser.getId();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					tx.rollback();
