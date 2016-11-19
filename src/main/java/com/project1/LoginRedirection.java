@@ -81,7 +81,7 @@ public class LoginRedirection extends HttpServlet {
 			response.sendRedirect(redirectString);
 			
 		}
-		else if(realm.equalsIgnoreCase("Paypal"))
+		else if(realm.equalsIgnoreCase("Github"))
 		{
 			String appId = "3fc8c836208f5da2ffa9";
 			String redirectUrl = "http://localhost:8080/project1/ReturnPaypal";
