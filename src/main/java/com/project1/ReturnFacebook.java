@@ -39,13 +39,6 @@ public class ReturnFacebook extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		/**
-		 * 
-		 * 
-		 * DO YOUR OPENID MAGIC HERE
-		 * 
-		 * 
-		 */
 		HttpSession session1=request.getSession();
 		session1.setAttribute("realm", "fb");
 		String redirectURI = "http://localhost:8080/project1/ReturnFacebook";
