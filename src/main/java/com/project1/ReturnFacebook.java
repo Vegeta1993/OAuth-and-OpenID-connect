@@ -46,20 +46,19 @@ public class ReturnFacebook extends HttpServlet {
 		 * 
 		 * 
 		 */
+		HttpSession session1=request.getSession();
+		session1.setAttribute("realm", "fb");
 		String redirectURI = "http://localhost:8080/project1/ReturnFacebook";
 		String appsec = "d802b237e9816ccfbf04a850ac2040a9";
 		String appId = "592725680924003";
 		HttpSession httpSession = request.getSession();
 		String faceCode = request.getParameter("code");
 		String accesst = getFacebookAccessToken(faceCode);
+		session1.setAttribute("at", accesst);
 		String email = getUserMailAddressFromJsonResponse(accesst, httpSession);
 		String name = getNameFromJsonResponse(accesst, httpSession);
-
-		/* ---- CHECK TO OUR DB BEGIN ---- */
-		// String name = "Stewart Sentanoe"; //Change this parameter based what
-		// you need
-		// String email = "ss@facebook.com"; //Change this parameter based what
-		// you need
+		session1.setAttribute("email", email);
+		session1.setAttribute("user", email);
 		String realm = "FACEBOOK"; // Change this parameter based what you need
 
 		int uid = 0;
@@ -82,6 +81,7 @@ public class ReturnFacebook extends HttpServlet {
 					System.out.println("Id: " + u.getId() + " | Name:" + u.getName() + " | Email:" + u.getEmail()
 							+ " | Realm:" + u.getRealm());
 					uid = u.getId();
+					session1.setAttribute("uid", uid);
 					/**
 					 * 
 					 * 
@@ -96,6 +96,8 @@ public class ReturnFacebook extends HttpServlet {
 					User newUser = new User(0, name, email, realm);
 					session.save(newUser);
 					uid = newUser.getId();
+					session1.setAttribute("uid", uid);
+
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					tx.rollback();
@@ -118,7 +120,7 @@ public class ReturnFacebook extends HttpServlet {
 				session.flush();
 				session.close();
 			}
-			response.sendRedirect("messageBoard.jsp?userid=" + uid);
+			response.sendRedirect("messageBoard.jsp");
 		}
 		/* ---- CHECK TO OUR DB END ---- */
 	}
