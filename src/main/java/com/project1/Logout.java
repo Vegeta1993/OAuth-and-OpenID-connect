@@ -1,9 +1,15 @@
 package com.project1;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +20,8 @@ import org.hibernate.Transaction;
 
 import com.db.Chat;
 import com.db.Connector;
+
+import sun.net.www.http.HttpClient;
 
 /**
  * Servlet implementation class Logout
@@ -26,44 +34,33 @@ public class Logout extends HttpServlet {
     }
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/**
-		 * 
-		 * 
-		 * DO YOUR DEAUTHORIZATION MAGIC HERE
-		 * 
-		 * 
-		 */
 		
-		
-		
-		//FOR DELETE ALL DATA
-		/*
-		Session session = null;
-        Transaction tx = null;
-        
-        try 
-        {
-        	Connector conn = new Connector();
-            session = conn.configureSessionFactory().openSession();
-            tx = session.beginTransaction();
-             
-            session.createQuery("delete from User").executeUpdate();
-            session.createQuery("delete from Chat").executeUpdate();
-        } 
-        catch (Exception ex) 
-        {
-        	tx.rollback();
-            ex.printStackTrace();
-        } 
-        finally
-        {
-        	if(session != null && session.isOpen())
-			{
-        		tx.commit();
-				session.flush();
-				session.close();
-			}
-        }*/
+		HttpSession session= request.getSession(false);
+		if(session.getAttribute("realm").toString().equals("google")){
+			String at = session.getAttribute("at").toString();
+			String redirect_url = "http://localhost:8080/project1/logout.jsp";
+			String returnValue = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue="+redirect_url;
+			try{
+				 response.sendRedirect(returnValue);
+				 return;
+		} catch (Exception e) {
+			// an error occurred, handle this
+			e.printStackTrace();
+		}
+			
+		}
+		session.removeAttribute("user");
+		session.removeAttribute("uid");
+		session.invalidate();    
+		Cookie[] cookies = request.getCookies();
+	    for (Cookie cookie : cookies) {
+	        cookie.setMaxAge(0);
+	        cookie.setValue(null);
+	        cookie.setPath("/");
+	        response.addCookie(cookie);
+	    }
+		RequestDispatcher rd = request.getRequestDispatcher("/index.jsp"); 
+        rd.forward(request,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
