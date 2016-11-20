@@ -42,8 +42,8 @@ public class LoginRedirection extends HttpServlet {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String realm = request.getParameter("direction");
+		
 		if (realm.equalsIgnoreCase("Google")) {
-			// REDIRECT THEM TO GOOGLE
 			URI redirectURI = null;
 			try {
 				redirectURI = new URI("http://localhost:8080/project1/ReturnGoogle");
@@ -60,14 +60,12 @@ public class LoginRedirection extends HttpServlet {
 			}
 			ResponseType rt = new ResponseType("code");
 			Scope scope = new Scope("openid", "email", "profile");
-			// insert your real clientID instead of the “***”
 			ClientID clientID = new ClientID(
 					"664700022174-tkgm8ehfjl4sieruvsi1chqkassg6n6p.apps.googleusercontent.com");
-			// State state = new State();
 			String state1 = new BigInteger(130, new SecureRandom()).toString(32);
 			request.getSession().setAttribute("state", state1);
 			State state = new State(state1);
-			Nonce nonce = null; // new Nonce(); -- nonce not supported by Google
+			Nonce nonce = null; 
 			AuthenticationRequest authRequest = new AuthenticationRequest(redirectURI, rt, scope, clientID, redirectURI,
 					state, nonce);
 			URI parameterizedRedirectURI = null;
