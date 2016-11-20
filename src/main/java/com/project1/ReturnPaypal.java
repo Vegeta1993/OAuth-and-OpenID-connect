@@ -44,7 +44,8 @@ public class ReturnPaypal extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		HttpSession session1 = request.getSession(false);
+		session1.setAttribute("realm", "github");
 		String appId = "3fc8c836208f5da2ffa9";
 		String redirectUrl = "http://localhost:8080/project1/ReturnPaypal";
 		String appsec = "4bea03427df49fb2e128e5c82b10d367f8a32ae0";
@@ -140,7 +141,6 @@ public class ReturnPaypal extends HttpServlet {
 			// an error occurred, handle this
 			e.printStackTrace();
 		}
-
 		String realm = "GITHUB";
 		int uid = 0;
 		Session session = null;
@@ -162,6 +162,8 @@ public class ReturnPaypal extends HttpServlet {
 					System.out.println("Id: " + u.getId() + " | Name:" + u.getName() + " | Email:" + u.getEmail()
 							+ " | Realm:" + u.getRealm());
 					uid = u.getId();
+					session1.setAttribute("uid", uid);
+
 					/**
 					 * 
 					 * 
@@ -176,6 +178,8 @@ public class ReturnPaypal extends HttpServlet {
 					User newUser = new User(0, name, email, realm);
 					session.save(newUser);
 					uid = newUser.getId();
+					session1.setAttribute("uid", uid);
+
 				} catch (Exception ex) {
 					ex.printStackTrace();
 					tx.rollback();
@@ -198,7 +202,7 @@ public class ReturnPaypal extends HttpServlet {
 				session.flush();
 				session.close();
 			}
-			response.sendRedirect("messageBoard.jsp?userid=" + uid);
+			response.sendRedirect("messageBoard.jsp");
 		}
 		/* ---- CHECK TO OUR DB END ---- */
 	}
