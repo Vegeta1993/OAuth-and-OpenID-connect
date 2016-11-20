@@ -147,27 +147,6 @@ public class ReturnGoogle extends HttpServlet {
 		session1.setAttribute("email", email);
 		session1.setAttribute("at", accessToken);
 
-		
-//		URI userinfoEndpointURL=null;
-//		try {
-//			userinfoEndpointURL = new URI("https://www.googleapis.com/oauth2/v3/userinfo");
-//		} catch (URISyntaxException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		UserInfoRequest userInfoRequest = new UserInfoRequest(userinfoEndpointURL, accessToken);
-//		httpResponse = userInfoRequest.toHTTPRequest().send();
-//		UserInfoResponse userInfoResponse=null;
-//		try {
-//			userInfoResponse = UserInfoResponse.parse(httpResponse);
-//		} catch (ParseException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		if (userInfoResponse instanceof UserInfoErrorResponse) {
-//			response.getWriter().println("Error accessing User Data");
-//		}
-		/* ---- CHECK TO OUR DB BEGIN ----*/
 		String realm = "GOOGLE"; //Change this parameter based what you need
 		int uid=0;
 		
