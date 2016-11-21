@@ -17,7 +17,7 @@ public class Noback {
 		String userName = (String) session.getAttribute("user");
 		if (null == userName) {
 			request.setAttribute("Error", "Session has ended.  Please login.");
-			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			try {
 				rd.forward(request, response);
 			} catch (ServletException | IOException e) {
