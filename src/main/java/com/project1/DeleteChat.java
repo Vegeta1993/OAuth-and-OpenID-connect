@@ -27,7 +27,13 @@ public class DeleteChat extends HttpServlet {
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String uid = request.getParameter("userid");
-
+		HttpSession session1 = request.getSession(false);
+		String uid1=session1.getAttribute("uid").toString();
+		if(uid.equals(uid1)==false){
+			response.sendRedirect("http://localhost:8080/project1/Error.jsp");
+			return;
+		}
+		int uid2 = Integer.parseInt(uid1);
 		int chatId = Integer.parseInt(request.getParameter("chatID"));
 		Session session = null;
         Transaction tx = null;
@@ -38,9 +44,10 @@ public class DeleteChat extends HttpServlet {
             session = conn.configureSessionFactory().openSession();
             tx = session.beginTransaction();
             
-            String hsql = "delete from Chat where id = :chatID";
+            String hsql = "delete from Chat where id = :chatID and user_id = :uid";
             Query query = session.createQuery(hsql);
             query.setParameter("chatID", chatId);
+            query.setParameter("uid", uid2);
             int res = query.executeUpdate();
             
             
@@ -59,7 +66,7 @@ public class DeleteChat extends HttpServlet {
 				session.close();
 			}
         	
-        	response.sendRedirect("messageBoard.jsp?userid="+uid);
+        	response.sendRedirect("messageBoard.jsp");
         }
 		
 	}
