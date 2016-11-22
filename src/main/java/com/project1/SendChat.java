@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.owasp.encoder.Encode;
 
 import com.db.Chat;
 import com.db.Connector;
@@ -48,8 +49,11 @@ public class SendChat extends HttpServlet {
             session = sf.openSession();
             tx = session.beginTransaction();
              
+            String encode=Encode.forHtmlContent(chat);
+            encode=Encode.forJavaScript(encode);
+            encode=Encode.forXml(encode);
             
-            Chat chat1 = new Chat(0,user_id,chat);
+            Chat chat1 = new Chat(0,user_id,encode);
             session.save(chat1);
             
             List<Chat> chats = session.createQuery("from Chat").list();
@@ -74,7 +78,7 @@ public class SendChat extends HttpServlet {
 				sf.close();
 			}
         	
-        	response.sendRedirect("messageBoard.jsp?userid="+uid);
+        	response.sendRedirect("messageBoard.jsp");
         }
 	}
 
