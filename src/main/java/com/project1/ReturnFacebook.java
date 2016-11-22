@@ -39,19 +39,17 @@ public class ReturnFacebook extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		HttpSession session1=request.getSession();
-		session1.setAttribute("realm", "fb");
-		String redirectURI = "http://localhost:8080/project1/ReturnFacebook";
+
+		String redirectURI = "http://192.168.12.16:8080/project1/ReturnFacebook";
 		String appsec = "d802b237e9816ccfbf04a850ac2040a9";
 		String appId = "592725680924003";
-		HttpSession httpSession = request.getSession();
+
 		String faceCode = request.getParameter("code");
 		String accesst = getFacebookAccessToken(faceCode);
-		session1.setAttribute("at", accesst);
-		String email = getUserMailAddressFromJsonResponse(accesst, httpSession);
-		String name = getNameFromJsonResponse(accesst, httpSession);
-		session1.setAttribute("email", email);
-		session1.setAttribute("user", email);
+
+		String email = getUserMailAddressFromJsonResponse(accesst);
+		String name = getNameFromJsonResponse(accesst);
+
 		String realm = "FACEBOOK"; // Change this parameter based what you need
 
 		int uid = 0;
@@ -74,14 +72,14 @@ public class ReturnFacebook extends HttpServlet {
 					System.out.println("Id: " + u.getId() + " | Name:" + u.getName() + " | Email:" + u.getEmail()
 							+ " | Realm:" + u.getRealm());
 					uid = u.getId();
+					HttpSession session1 = request.getSession(true);
+					session1.setAttribute("realm", "fb");
+					session1.setAttribute("appid", appId);
+					session1.setAttribute("email", email);
+					session1.setAttribute("user", email);
+					session1.setAttribute("at", accesst);
 					session1.setAttribute("uid", uid);
-					/**
-					 * 
-					 * 
-					 * DO YOUR AUTHORIZATION MAGIC HERE
-					 * 
-					 * 
-					 */
+					
 				}
 			} else {
 				// USER IS NOT EXIST, STORE IN DB
@@ -89,6 +87,12 @@ public class ReturnFacebook extends HttpServlet {
 					User newUser = new User(0, name, email, realm);
 					session.save(newUser);
 					uid = newUser.getId();
+					HttpSession session1 = request.getSession(true);
+					session1.setAttribute("realm", "fb");
+					session1.setAttribute("appid", appId);
+					session1.setAttribute("email", email);
+					session1.setAttribute("user", email);
+					session1.setAttribute("at", accesst);
 					session1.setAttribute("uid", uid);
 
 				} catch (Exception ex) {
@@ -96,13 +100,7 @@ public class ReturnFacebook extends HttpServlet {
 					tx.rollback();
 				}
 
-				/**
-				 * 
-				 * 
-				 * DO YOUR AUTHORIZATION MAGIC HERE
-				 * 
-				 * 
-				 */
+				
 			}
 		} catch (Exception ex) {
 
@@ -122,7 +120,7 @@ public class ReturnFacebook extends HttpServlet {
 		String token = null;
 		try {
 			String g = "https://graph.facebook.com/oauth/access_token?client_id=592725680924003&redirect_uri="
-					+ URLEncoder.encode("http://localhost:8080/project1/ReturnFacebook", "UTF-8")
+					+ URLEncoder.encode("http://192.168.12.16:8080/project1/ReturnFacebook", "UTF-8")
 					+ "&client_secret=d802b237e9816ccfbf04a850ac2040a9&code=" + faceCode;
 			URL u = new URL(g);
 			URLConnection c = (URLConnection) u.openConnection();
@@ -146,7 +144,7 @@ public class ReturnFacebook extends HttpServlet {
 		return newToken;
 	}
 
-	private String getUserMailAddressFromJsonResponse(String accessToken, HttpSession httpSession) {
+	private String getUserMailAddressFromJsonResponse(String accessToken) {
 		String graph = null;
 
 		try {
@@ -178,7 +176,7 @@ public class ReturnFacebook extends HttpServlet {
 		}
 	}
 
-	private String getNameFromJsonResponse(String accessToken, HttpSession httpSession) {
+	private String getNameFromJsonResponse(String accessToken) {
 		String graph = null;
 
 		try {
