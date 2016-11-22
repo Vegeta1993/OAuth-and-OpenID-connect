@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,7 +7,9 @@
 <title>Error</title>
 </head>
 <body>
-<p>	Invalid action</p>
-<p><a href="http://localhost:8080/project1/index.jsp">LOGIN</a></p>
+	<p>Invalid action</p>
+	<p>
+		<a href="http://192.168.12.16:8080/project1/index.jsp">LOGIN</a>
+	</p>
 </body>
 </html>
