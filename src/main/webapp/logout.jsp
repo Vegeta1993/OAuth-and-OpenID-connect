@@ -8,18 +8,21 @@
 </head>
 <body>
 	<%
+	session.removeAttribute("realm");
+	session.removeAttribute("email");
+	session.removeAttribute("at");
 	session.removeAttribute("user");
 	session.removeAttribute("uid");
-	session.invalidate();    
+	session.invalidate();
 	Cookie[] cookies = request.getCookies();
 	for (Cookie cookie : cookies) {
-    	cookie.setMaxAge(0);
-    	cookie.setValue(null);
-    	cookie.setPath("/");
-    	response.addCookie(cookie);
+		cookie.setMaxAge(0);
+		cookie.setValue(null);
+		cookie.setPath("/");
+		response.addCookie(cookie);
 	}
-	RequestDispatcher rd = request.getRequestDispatcher("/index.jsp"); 
-	rd.forward(request,response);
-%>
+	RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+	rd.forward(request, response);
+	%>
 </body>
 </html>

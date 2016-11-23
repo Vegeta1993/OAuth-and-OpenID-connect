@@ -7,9 +7,11 @@
 <title>Error</title>
 </head>
 <body>
+<center>
 	<p>Invalid action</p>
 	<p>
-		<a href="http://192.168.12.16:8080/project1/index.jsp">LOGIN</a>
+		<a href="http://192.168.12.16:8080/project1/logout.jsp">LOGIN</a>
 	</p>
+	</center>>
 </body>
 </html>
