@@ -37,11 +37,9 @@ public class FetchChat extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// int loggedInUserId = 1; //Change this parameter based on your needs
 		String uid = request.getParameter("userid");
+		
 		int loggedInUserId = uid != null ? Integer.parseInt(uid) : 1;
-		// String loggedInUserName = "Stewart Sentanoe"; //Change this parameter
-		// based on your needs
 
 		String loggedInUserName = "";
 
@@ -54,6 +52,21 @@ public class FetchChat extends HttpServlet {
 			sf = conn.configureSessionFactory();
 			session = sf.openSession();
 			tx = session.beginTransaction();
+			String uid1 = null;
+			try {
+				uid1 = request.getSession().getAttribute("uid").toString();
+				if (uid1 == null) {
+					response.sendRedirect("/index.jsp");
+					return;
+				}
+			} catch (Exception ex) {
+				response.sendRedirect("/index.jsp");
+				return;
+			}
+			if (uid.equals(uid1) == false) {
+				response.sendRedirect("/Error.jsp");
+				return;
+			}
 
 			{
 				String hsql = "from User where id = :user_id";
