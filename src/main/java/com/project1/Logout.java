@@ -51,19 +51,7 @@ public class Logout extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		if (realm.equals("github")) {
-			String clid = session.getAttribute("clid").toString();
-			String returnValue1 = "https://github.com/settings/applications/440899#revoke_tokens";
-			try {
-				response.sendRedirect(returnValue1);
-				return;
-			} catch (Exception e) {
-				// an error occurred, handle this
-				e.printStackTrace();
-			}
-
-		}
-
+		
 		session.removeAttribute("realm");
 		session.removeAttribute("email");
 		session.removeAttribute("at");
