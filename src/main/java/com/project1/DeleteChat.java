@@ -36,12 +36,12 @@ public class DeleteChat extends HttpServlet {
 		try{
 			uid1=session1.getAttribute("uid").toString();
 			if(uid1==null){
-            	forward = "/Error.jsp";
+            	forward = "http://192.168.12.16:8080/project1/index.jsp";
             	return;
             }
 		}catch (Exception ex)
 		{
-        	forward = "/Error.jsp";
+        	forward = "http://192.168.12.16:8080/project1/Error.jsp";
 			return;
 		}
         try 
@@ -52,7 +52,7 @@ public class DeleteChat extends HttpServlet {
             tx = session.beginTransaction();
     		
     		if(uid.equals(uid1)==false){
-            	forward = "/Error.jsp";
+            	forward = "messageBoard.jsp";
     			return;
     		}
     		int uid2;
@@ -62,7 +62,7 @@ public class DeleteChat extends HttpServlet {
     		uid2 = Integer.parseInt(uid1);
     		chatId = Integer.parseInt(request.getParameter("chatID"));
     		}catch (Exception ex){
-            	forward = "/Error.jsp";
+            	forward = "http://192.168.12.16:8080/project1/Error.jsp";
     			return;
     		}
             String hsql = "delete from Chat where id = :chatID and user_id = :uid";
@@ -85,6 +85,9 @@ public class DeleteChat extends HttpServlet {
         		tx.commit();
 				session.flush();
 				session.close();
+			}
+        	else{
+				forward="/project1/index.jsp";
 			}
         	response.sendRedirect(forward);
         	
