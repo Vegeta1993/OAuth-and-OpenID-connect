@@ -76,7 +76,7 @@ public class ReturnFacebook extends HttpServlet {
 					session1.setAttribute("realm", "fb");
 					session1.setAttribute("appid", appId);
 					session1.setAttribute("email", email);
-					session1.setAttribute("user", email);
+					session1.setAttribute("user", name);
 					session1.setAttribute("at", accesst);
 					session1.setAttribute("uid", uid);
 					
@@ -91,7 +91,7 @@ public class ReturnFacebook extends HttpServlet {
 					session1.setAttribute("realm", "fb");
 					session1.setAttribute("appid", appId);
 					session1.setAttribute("email", email);
-					session1.setAttribute("user", email);
+					session1.setAttribute("user", name);
 					session1.setAttribute("at", accesst);
 					session1.setAttribute("uid", uid);
 

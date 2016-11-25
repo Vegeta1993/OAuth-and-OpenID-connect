@@ -81,7 +81,7 @@
 				<!-- /.dropdown -->
 				<li class="dropdown"><a class="dropdown-toggle"
 					data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
-						<i>User</i> <i class="fa fa-caret-down"></i>
+						<i><%=request.getSession(false).getAttribute("user") %></i> <i class="fa fa-caret-down"></i>
 				</a>
 					<ul class="dropdown-menu dropdown-user">
 

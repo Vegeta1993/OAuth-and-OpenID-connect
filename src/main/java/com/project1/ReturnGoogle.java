@@ -168,7 +168,7 @@ public class ReturnGoogle extends HttpServlet {
 					String at=accessToken.toString();
 					HttpSession session1 = request.getSession(true);
 					session1.setAttribute("realm", "google");
-					session1.setAttribute("user", email);
+					session1.setAttribute("user", name);
 					session1.setAttribute("email", email);
 					session1.setAttribute("at", at);
 					session1.setAttribute("uid", uid);
@@ -187,7 +187,7 @@ public class ReturnGoogle extends HttpServlet {
 
 				HttpSession session1 = request.getSession(true);
 				session1.setAttribute("realm", "google");
-				session1.setAttribute("user", email);
+				session1.setAttribute("user", name);
 				session1.setAttribute("email", email);
 				session1.setAttribute("at", accessToken);
 				session1.setAttribute("uid", uid);
