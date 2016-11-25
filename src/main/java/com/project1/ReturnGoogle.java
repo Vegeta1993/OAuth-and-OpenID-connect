@@ -57,7 +57,7 @@ public class ReturnGoogle extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		String forward="messageBoard.jsp";
 		String returnURL = "http://192.168.12.16.nip.io:8080/project1/ReturnGoogle";
 		String query1 = request.getRequestURL().append("?").append(request.getQueryString()).toString();
 		URI s = null;
@@ -83,9 +83,9 @@ public class ReturnGoogle extends HttpServlet {
 		com.nimbusds.oauth2.sdk.id.State state = authzSuccess.getState();
 //		String state1 = state.toString();
 //		String state2 = request.getSession().getAttribute("state").toString();
-//		response.getWriter().print(state1 + " " + state2);
 //		if (state1.equals(state2) == false) {
 //			response.getWriter().print("CSRF attack attempted");
+//			forward="/Error.jsp";
 //			return;
 //		}
 
@@ -165,11 +165,12 @@ public class ReturnGoogle extends HttpServlet {
 					System.out.println("Id: " + u.getId() + " | Name:" + u.getName() + " | Email:" + u.getEmail()
 							+ " | Realm:" + u.getRealm());
 					uid = u.getId();
+					String at=accessToken.toString();
 					HttpSession session1 = request.getSession(true);
 					session1.setAttribute("realm", "google");
 					session1.setAttribute("user", email);
 					session1.setAttribute("email", email);
-					session1.setAttribute("at", accessToken);
+					session1.setAttribute("at", at);
 					session1.setAttribute("uid", uid);
 				}
 			} else {
@@ -200,7 +201,7 @@ public class ReturnGoogle extends HttpServlet {
 				session.flush();
 				session.close();
 			}
-			response.sendRedirect("messageBoard.jsp");
+			response.sendRedirect(forward);
 		}
 		/* ---- CHECK TO OUR DB END ---- */
 	}
