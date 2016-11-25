@@ -44,17 +44,23 @@ public class SendChat extends HttpServlet {
 		String forward="messageBoard.jsp";
 
 		try {
+			
+			if(uid==null && chat==null){
+				forward="/project1/index.jsp";
+				return;
+			}
 			Connector conn = new Connector();
 			sf = conn.configureSessionFactory();
 			session = sf.openSession();
 			tx = session.beginTransaction();
 			String uid1 = request.getSession().getAttribute("uid").toString();
 			if (uid1 == null) {
-				forward="/Error.jsp";
+				forward="http://192.168.12.16:8080/project1/index.jsp";
 				return;
 			}
 			if (uid.equals(uid1) == false) {
-				forward="/Error.jsp";
+				forward="messageBoard.jsp";
+				chat=null;
 				return;
 			}
 			String encode = Encode.forHtmlContent(chat);
@@ -72,12 +78,16 @@ public class SendChat extends HttpServlet {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			tx.rollback();
+			forward="http://192.168.12.16:8080/project1/Error.jsp";
 		} finally {
 			if (session != null && session.isOpen()) {
 				tx.commit();
 				session.flush();
 				session.close();
 				sf.close();
+			}
+			else{
+				forward="/project1/index.jsp";
 			}
 
 			response.sendRedirect(forward);
