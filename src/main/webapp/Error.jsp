@@ -12,6 +12,6 @@
 	<p>
 		<a href="http://192.168.12.16:8080/project1/logout.jsp">LOGIN</a>
 	</p>
-	</center>>
+	</center>
 </body>
 </html>
