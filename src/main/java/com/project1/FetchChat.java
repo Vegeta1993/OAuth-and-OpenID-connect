@@ -56,11 +56,11 @@ public class FetchChat extends HttpServlet {
 			try {
 				uid1 = request.getSession().getAttribute("uid").toString();
 				if (uid1 == null) {
-					response.sendRedirect("/project1/index.jsp");
+					response.sendRedirect("http://192.168.12.16:8080/project1/index.jsp");
 					return;
 				}
 			} catch (Exception ex) {
-				response.sendRedirect("/project1/index.jsp");
+				response.sendRedirect("http://192.168.12.16:8080/project1/index.jsp");
 				return;
 			}
 			if (uid.equals(uid1) == false) {

@@ -87,7 +87,7 @@ public class DeleteChat extends HttpServlet {
 				session.close();
 			}
         	else{
-				forward="/project1/index.jsp";
+				forward="http://192.168.12.16:8080/project1/index.jsp";
 			}
         	response.sendRedirect(forward);
         	

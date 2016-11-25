@@ -80,6 +80,7 @@ public class SendChat extends HttpServlet {
 			tx.rollback();
 			forward="http://192.168.12.16:8080/project1/Error.jsp";
 		} finally {
+			try{
 			if (session != null && session.isOpen()) {
 				tx.commit();
 				session.flush();
@@ -87,7 +88,10 @@ public class SendChat extends HttpServlet {
 				sf.close();
 			}
 			else{
-				forward="/project1/index.jsp";
+				forward="http://192.168.12.16:8080/project1/index.jsp";
+			}}
+			catch(Exception ex){
+				forward="http://192.168.12.16:8080/project1/index.jsp";
 			}
 
 			response.sendRedirect(forward);
