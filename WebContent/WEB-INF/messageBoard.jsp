@@ -43,6 +43,21 @@
 		
 		Noback yo = new Noback();
 		yo.noback(session, request, response);
+		//Session fixation
+		if(session!=null){
+			String realm=session.getAttribute("realm").toString();
+			String user=session.getAttribute("user").toString();
+			String email=session.getAttribute("email").toString();
+			String at=session.getAttribute("at").toString();
+			String uid=session.getAttribute("uid").toString();
+			session.invalidate();
+			session=request.getSession(true);
+			session.setAttribute("realm",realm);
+			session.setAttribute("user", user);
+			session.setAttribute("email", email);
+			session.setAttribute("at",at);
+			session.setAttribute("uid", uid);
+		}
 		
 	%>
 
