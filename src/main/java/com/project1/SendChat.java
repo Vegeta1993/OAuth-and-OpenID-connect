@@ -44,7 +44,7 @@ public class SendChat extends HttpServlet {
 		String forward="messageBoard.jsp";
 
 		try {
-			
+
 			if(uid==null && chat==null){
 				forward="/project1/index.jsp";
 				return;
@@ -55,7 +55,7 @@ public class SendChat extends HttpServlet {
 			tx = session.beginTransaction();
 			String uid1 = request.getSession().getAttribute("uid").toString();
 			if (uid1 == null) {
-				forward="http://192.168.12.16:8080/project1/index.jsp";
+				forward="http://localhost:8080/project1/index.jsp";
 				return;
 			}
 			if (uid.equals(uid1) == false) {
@@ -78,7 +78,7 @@ public class SendChat extends HttpServlet {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 			tx.rollback();
-			forward="http://192.168.12.16:8080/project1/Error.jsp";
+			forward="http://localhost:8080/project1/Error.jsp";
 		} finally {
 			try{
 			if (session != null && session.isOpen()) {
@@ -88,10 +88,10 @@ public class SendChat extends HttpServlet {
 				sf.close();
 			}
 			else{
-				forward="http://192.168.12.16:8080/project1/index.jsp";
+				forward="http://localhost:8080/project1/index.jsp";
 			}}
 			catch(Exception ex){
-				forward="http://192.168.12.16:8080/project1/index.jsp";
+				forward="http://localhost:8080/project1/index.jsp";
 			}
 
 			response.sendRedirect(forward);

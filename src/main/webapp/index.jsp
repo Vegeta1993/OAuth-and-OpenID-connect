@@ -1,6 +1,6 @@
 <%
 	//Check if already sign in, redirect to messageBoard.jsp
-	if(session.getAttribute("userName") != null && session.getAttribute("userID") != null)
+	if(session.getAttribute("user") != null && session.getAttribute("uid") != null)
 	{
 		response.sendRedirect("messageBoard.jsp");
 	}
@@ -29,7 +29,7 @@
 
     <!-- Custom Fonts -->
     <link href="bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    
+
     <!-- Social Buttons CSS -->
     <link href="bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet">
 
@@ -62,8 +62,8 @@
                                 	<i class="fa fa-facebook"></i> Sign in with Facebook
                             	</button>
                             </fieldset>
-                            
-                            
+
+
                             <%
 								if(session.getAttribute("error") != null)
 								{

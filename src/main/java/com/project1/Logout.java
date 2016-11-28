@@ -40,7 +40,7 @@ public class Logout extends HttpServlet {
 		String realm = session.getAttribute("realm").toString();
 		if (realm.equals("google")) {
 			String at = session.getAttribute("at").toString();
-			String redirect_url = "http://192.168.12.16.nip.io:8080/project1/logout.jsp";
+			String redirect_url = "http://localhost:8080/project1/logout.jsp";
 			String returnValue = "https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue="
 					+ redirect_url;
 			try {
@@ -51,13 +51,14 @@ public class Logout extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		
+		//removing all attributes before invalidating
 		session.removeAttribute("realm");
 		session.removeAttribute("email");
 		session.removeAttribute("at");
 		session.removeAttribute("user");
 		session.removeAttribute("uid");
 		session.invalidate();
+		//we haven't used cookies, but to be on safer side remove all cookies.
 		Cookie[] cookies = request.getCookies();
 		for (Cookie cookie : cookies) {
 			cookie.setMaxAge(0);

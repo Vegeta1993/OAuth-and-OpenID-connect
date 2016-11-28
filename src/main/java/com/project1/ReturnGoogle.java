@@ -58,7 +58,7 @@ public class ReturnGoogle extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String forward="messageBoard.jsp";
-		String returnURL = "http://192.168.12.16.nip.io:8080/project1/ReturnGoogle";
+		String returnURL = "http://localhost:8080/project1/ReturnGoogle";
 		String query1 = request.getRequestURL().append("?").append(request.getQueryString()).toString();
 		URI s = null;
 		try {
@@ -81,16 +81,16 @@ public class ReturnGoogle extends HttpServlet {
 		AuthenticationSuccessResponse authzSuccess = (AuthenticationSuccessResponse) authResponse;
 		AuthorizationCode code = authzSuccess.getAuthorizationCode();
 		com.nimbusds.oauth2.sdk.id.State state = authzSuccess.getState();
-//		String state1 = state.toString();
-//		String state2 = request.getSession().getAttribute("state").toString();
-//		if (state1.equals(state2) == false) {
-//			response.getWriter().print("CSRF attack attempted");
-//			forward="/Error.jsp";
-//			return;
-//		}
+		String state1 = state.toString();
+		String state2 = request.getSession().getAttribute("state").toString();
+		if (state1.equals(state2) == false) {
+			response.getWriter().print("CSRF attack attempted");
+			forward="/Error.jsp";
+			return;
+		}
 
-		ClientID clientID = new ClientID("664700022174-tkgm8ehfjl4sieruvsi1chqkassg6n6p.apps.googleusercontent.com");
-		Secret clientSecret = new Secret("HqQRmVe9AEbzBeciRsnPnaks");
+		ClientID clientID = new ClientID("xxx.apps.googleusercontent.com");
+		Secret clientSecret = new Secret("xxx");
 		ClientAuthentication clientAuth = new ClientSecretPost(clientID, clientSecret);
 
 		URI tokenEndpointURL = null;

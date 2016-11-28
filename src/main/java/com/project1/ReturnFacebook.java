@@ -40,9 +40,9 @@ public class ReturnFacebook extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String redirectURI = "http://192.168.12.16:8080/project1/ReturnFacebook";
-		String appsec = "d802b237e9816ccfbf04a850ac2040a9";
-		String appId = "592725680924003";
+		String redirectURI = "http://localhost:8080/project1/ReturnFacebook";
+		String appsec = "xxx";
+		String appId = "xxx";
 
 		String faceCode = request.getParameter("code");
 		String accesst = getFacebookAccessToken(faceCode);
@@ -67,7 +67,7 @@ public class ReturnFacebook extends HttpServlet {
 			List<User> result = query.list();
 
 			if (result.size() != 0) {
-				// USER IS EXIST, DO THE AUTHORIZATION METHOD
+				// USER EXISTS, DO THE AUTHORIZATION METHOD
 				for (User u : result) {
 					System.out.println("Id: " + u.getId() + " | Name:" + u.getName() + " | Email:" + u.getEmail()
 							+ " | Realm:" + u.getRealm());
@@ -79,10 +79,10 @@ public class ReturnFacebook extends HttpServlet {
 					session1.setAttribute("user", name);
 					session1.setAttribute("at", accesst);
 					session1.setAttribute("uid", uid);
-					
+
 				}
 			} else {
-				// USER IS NOT EXIST, STORE IN DB
+				// USER DOESN'T EXIST, STORE IN DB
 				try {
 					User newUser = new User(0, name, email, realm);
 					session.save(newUser);
@@ -100,7 +100,7 @@ public class ReturnFacebook extends HttpServlet {
 					tx.rollback();
 				}
 
-				
+
 			}
 		} catch (Exception ex) {
 
@@ -119,9 +119,9 @@ public class ReturnFacebook extends HttpServlet {
 	private String getFacebookAccessToken(String faceCode) {
 		String token = null;
 		try {
-			String g = "https://graph.facebook.com/oauth/access_token?client_id=592725680924003&redirect_uri="
-					+ URLEncoder.encode("http://192.168.12.16:8080/project1/ReturnFacebook", "UTF-8")
-					+ "&client_secret=d802b237e9816ccfbf04a850ac2040a9&code=" + faceCode;
+			String g = "https://graph.facebook.com/oauth/access_token?client_id=xxx&redirect_uri="
+					+ URLEncoder.encode("http://localhost:8080/project1/ReturnFacebook", "UTF-8")
+					+ "&client_secret="+client_secret+"&code=" + faceCode;
 			URL u = new URL(g);
 			URLConnection c = (URLConnection) u.openConnection();
 			BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));

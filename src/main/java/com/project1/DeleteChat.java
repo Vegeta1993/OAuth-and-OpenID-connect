@@ -1,5 +1,5 @@
 package com.project1;
-
+//This is used to delete chat in messageBoard.jsp
 import java.io.IOException;
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class DeleteChat extends HttpServlet {
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String uid = request.getParameter("userid");
-		
+
 		Session session = null;
         Transaction tx = null;
         String forward="messageBoard.jsp";
@@ -36,33 +36,33 @@ public class DeleteChat extends HttpServlet {
 		try{
 			uid1=session1.getAttribute("uid").toString();
 			if(uid1==null){
-            	forward = "http://192.168.12.16:8080/project1/index.jsp";
+            	forward = "http://localhost:8080/project1/index.jsp";
             	return;
             }
 		}catch (Exception ex)
 		{
-        	forward = "http://192.168.12.16:8080/project1/Error.jsp";
+        	forward = "http://localhost:8080/project1/Error.jsp";
 			return;
 		}
-        try 
+        try
         {
-           
+
         	Connector conn = new Connector();
             session = conn.configureSessionFactory().openSession();
             tx = session.beginTransaction();
-    		
+
     		if(uid.equals(uid1)==false){
             	forward = "messageBoard.jsp";
     			return;
     		}
     		int uid2;
     		int chatId;
-    		
+
     		try{
     		uid2 = Integer.parseInt(uid1);
     		chatId = Integer.parseInt(request.getParameter("chatID"));
     		}catch (Exception ex){
-            	forward = "http://192.168.12.16:8080/project1/Error.jsp";
+            	forward = "http://localhost:8080/project1/Error.jsp";
     			return;
     		}
             String hsql = "delete from Chat where id = :chatID and user_id = :uid";
@@ -70,14 +70,14 @@ public class DeleteChat extends HttpServlet {
             query.setParameter("chatID", chatId);
             query.setParameter("uid", uid2);
             int res = query.executeUpdate();
-            
-            
-        } 
-        catch (Exception ex) 
+
+
+        }
+        catch (Exception ex)
         {
         	tx.rollback();
             ex.printStackTrace();
-        } 
+        }
         finally
         {
         	if(session != null && session.isOpen())
@@ -87,12 +87,12 @@ public class DeleteChat extends HttpServlet {
 				session.close();
 			}
         	else{
-				forward="http://192.168.12.16:8080/project1/index.jsp";
+				forward="http://localhost:8080/project1/index.jsp";
 			}
         	response.sendRedirect(forward);
-        	
+
         }
-		
+
 	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub

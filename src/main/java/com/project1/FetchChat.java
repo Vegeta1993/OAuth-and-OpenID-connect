@@ -1,5 +1,5 @@
 package com.project1;
-
+//This code is used to fetch chats from sqllite3
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -38,7 +38,7 @@ public class FetchChat extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String uid = request.getParameter("userid");
-		
+
 		int loggedInUserId = uid != null ? Integer.parseInt(uid) : 1;
 
 		String loggedInUserName = "";
@@ -56,11 +56,11 @@ public class FetchChat extends HttpServlet {
 			try {
 				uid1 = request.getSession().getAttribute("uid").toString();
 				if (uid1 == null) {
-					response.sendRedirect("http://192.168.12.16:8080/project1/index.jsp");
+					response.sendRedirect("http://localhost:8080/project1/index.jsp");
 					return;
 				}
 			} catch (Exception ex) {
-				response.sendRedirect("http://192.168.12.16:8080/project1/index.jsp");
+				response.sendRedirect("http://localhost:8080/project1/index.jsp");
 				return;
 			}
 			if (uid.equals(uid1) == false) {

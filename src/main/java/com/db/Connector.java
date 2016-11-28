@@ -1,5 +1,5 @@
 package com.db;
-
+//This specifies how connection is to be made to sqllite
 import java.util.Properties;
 
 import org.hibernate.HibernateException;
@@ -9,21 +9,21 @@ import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
 public class Connector {
-	
+
 	public Connector()
 	{
-		
+
 	}
-	
-	public SessionFactory configureSessionFactory() throws HibernateException {  
-        Configuration configuration = new Configuration();  
-        configuration.configure();  
-         
+
+	public SessionFactory configureSessionFactory() throws HibernateException {
+        Configuration configuration = new Configuration();
+        configuration.configure();
+
         Properties properties = configuration.getProperties();
-         
-        ServiceRegistry builder = new ServiceRegistryBuilder().applySettings(properties).buildServiceRegistry(); 
+
+        ServiceRegistry builder = new ServiceRegistryBuilder().applySettings(properties).buildServiceRegistry();
         SessionFactory factory = configuration.buildSessionFactory(builder);
-         
-        return factory;  
+
+        return factory;
     }
 }

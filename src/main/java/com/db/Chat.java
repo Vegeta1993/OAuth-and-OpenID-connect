@@ -1,5 +1,5 @@
 package com.db;
-
+//This creates a chat table in SQLlite3.db
 
 
 import javax.persistence.Entity;
@@ -15,23 +15,23 @@ public class Chat {
     private Integer id;
     private Integer user_id;
     private String chat;
- 
+
     public Chat() {
- 
+
     }
- 
+
     public Chat(Integer id, Integer uid, String chat) {
         this.id = id;
         this.user_id = uid;
         this.chat = chat;
     }
- 
+
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId() {
         return this.id;
     }
- 
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -51,5 +51,5 @@ public class Chat {
 	public void setChat(String chat) {
 		this.chat = chat;
 	}
-	
+
 }

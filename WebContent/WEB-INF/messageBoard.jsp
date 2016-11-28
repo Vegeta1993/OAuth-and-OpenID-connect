@@ -39,8 +39,8 @@
 </head>
 
 <body>
-	<% 
-		
+	<%
+
 		Noback yo = new Noback();
 		yo.noback(session, request, response);
 		//Session fixation
@@ -58,7 +58,7 @@
 			session.setAttribute("at",at);
 			session.setAttribute("uid", uid);
 		}
-		
+
 	%>
 
 	<div id="wrapper">
@@ -186,9 +186,9 @@
 	<script src="dist/js/sb-admin-2.js"></script>
 
 	<script type="text/javascript">
-    
+
     $(document).ready(function(){
-    	
+
     	function fetchMessage(x)
     	{
     		$(".chat").html("");
@@ -200,7 +200,7 @@
     	        $("#loadingAnimation").hide();
     	     }});
     	}
-    	
+
     	fetchMessage($("#recentMessage").val());
     	$("#recentMessage").change(function()
     	{
@@ -211,9 +211,9 @@
     	{
     		fetchMessage($("#recentMessage").val());
     	});
-    	
+
     });
-    
+
     </script>
 
 </body>
