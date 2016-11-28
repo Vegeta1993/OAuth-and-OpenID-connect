@@ -10,3 +10,11 @@ The client secret is no longer in use, so request for new one in https://console
 You might want to put it on remote server with no DNS server, and some authentication provider might not accept this. Then you can use xip.io or nip.io which will redirect to your URL.
 
 As I only tried this on HTTP server, my web application is vulnerable to session hijacking as it doesn't use TLS/SSL.
+
+When you download/clone this project you might find a lot of errors. So add this to your POM file.
+
+<properties>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+</properties>
+
+And set your targeted runtimes and deployment assembly and project facets. 
